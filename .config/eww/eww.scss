@@ -1,0 +1,252 @@
+@import "gruvbox.scss";
+
+* {
+  all: unset; //Unsets everything so you can style everything from scratch
+}
+
+//Global Styles
+.topbar {
+  background-color: rgba(0, 0, 0, 0.7);
+	border-bottom-left-radius: $fborderradius;
+  border-bottom-right-radius: $fborderradius;
+  padding: 20px;
+  color: #ffd5cd;
+}
+
+.bottombar {
+  background-color: rgba(0, 0, 0, 0.7);
+	border-top-left-radius: $fborderradius;
+  border-top-right-radius: $fborderradius;
+  color: #ffd5cd;
+}
+
+// Styles on classes (see eww.yuck for more information)
+
+.icon-module {
+  margin: 0 5px;
+  & > &__icon {
+    margin-right: 5px;
+    font-family: "Font Awesome 5 Free Solid";
+  }
+}
+
+.sidestuff slider {
+  all: unset;
+  color: #ffd5cd;
+}
+
+.metric scale trough highlight {
+  all: unset;
+  background-color: $green;
+  color: $black;
+  border-radius: 10px;
+}
+
+.metric scale.warning trough highlight {
+  all: unset;
+  background-color: $yellow;
+  color: $black;
+  border-radius: 10px;
+}
+
+.metric scale.error trough highlight {
+  all: unset;
+  background-color: $error;
+  color: $black;
+  border-radius: 10px;
+}
+
+.metric scale.volume trough highlight {
+  all: unset;
+  background-color: $lightmagenta;
+  color: $black;
+  border-radius: 10px;
+}
+
+.metric scale trough {
+  all: unset;
+  background-color: $background-alt;
+  border-radius: 50px;
+  min-height: 5px;
+  min-width: 100px;
+  margin-left: 10px;
+  margin-right: 20px;
+}
+
+.label-ram {
+  font-size: large;
+}
+
+.workspaces {
+  background-color: $background-alt;
+  border-radius: 15px;
+  margin-left: 5px;
+  margin-top: 5px;
+  padding-left: 10px;
+  padding-right: 5px;
+
+  font-family: "Hack NF Regular";
+  font-size: 28px;
+  margin-right: 20px;
+
+  button {
+    color: #a89984;
+    margin: 0px 3px;
+  }
+  button.focused {
+    color: $green;
+  }
+  button.urgent {
+    color: $urgent;
+  }
+}
+.mantis_assigned {
+  font-size: 1em;
+  // border-radius: 20px;
+  background-color: $green;
+  color: $background;
+}
+.spotify {
+  font-size: 1em;
+  // border-radius: 20px;
+  background-color: $green;
+  color: $background;
+}
+
+.spotify-text {
+  font-size: 1em;
+  background-color: $green;
+  color: $green;
+}
+
+.notifications {
+  font-size: 1em;
+  // border-radius: 20px;
+  background-color: red;
+  color: $background;
+  border-top-right-radius: $fborderradius;
+  border-bottom-right-radius: $fborderradius;
+}
+
+.notifications-text {
+  font-size: 1em;
+  background-color: red;
+  color: $green;
+}
+
+.docker {
+  font-family: "Font Awesome 5 Brands";
+  // border-radius: 20px;
+  font-size: 1em;
+  background-color: $blue;
+  color: $background;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.github {
+  font-family: "Font Awesome 5 Brands";
+  font-size: 1em;
+  background-color: $lightgray;
+  color: $background;
+}
+
+.github-text {
+  font-family: "Font Awesome 5 Brands";
+  font-size: 1em;
+  background-color: $lightgray;
+  color: $black;
+  //padding-top: 0.7em;
+}
+
+.volume {
+  font-family: "Font Awesome 5 Brands";
+  font-size: 1em;
+//  border: 1px solid $gray;
+  color: $foreground;
+}
+
+.uplink {
+  color: $lightmagenta;
+}
+
+.veryuplink {
+  color: $red;
+}
+
+.noactive {
+  color: $white;
+}
+
+.downlink {
+  color: $lightcyan;
+}
+
+.verydownlink {
+  color: $green;
+}
+
+.close {
+  background-color: $red;
+  color: $background;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+button:hover {
+  text-decoration: underline;
+  color: white;
+}
+
+.acivewindowname {
+  margin-left: 5px;
+}
+
+.timeinfo {
+  margin-right: 5px;
+}
+
+.ipinfo {
+  margin-right: 10px;
+}
+
+.w0, .w01, .w02, .w03, .w04, .w05, .w06, .w07, .w08, .w09, .w011, .w022, .w033, .w044, .w055, .w066, .w077, .w088, .w099 {
+  padding: 0px 5px;
+  box-shadow: inset 0 -2px transparent;
+}
+
+/* Unoccupied */
+.w0 {
+  color: #a89984;
+}
+
+/* Occupied */
+.w01, .w02, .w03, .w04, .w05, .w06, .w07, .w08, .w09 {
+  color: #fbf1c7;
+}
+
+/* Focused */
+.w011, .w022, .w033, .w044, .w055, .w066, .w077, .w088, .w099 {
+  color: #fbf1c7;
+  box-shadow: inset 0 -3px #98971a;
+}
+
+.workspace {
+padding: 0 10px;
+}
+
+.workspace button:hover {
+  box-shadow: inset 0 -3px #ffffff;
+}
+
+.redis, .ok{
+  background-color: green;
+  font-size: 70%;
+  padding: 0 10px;
+}
+
+.redis, .no{
+  background-color: red;
+  font-size: 70%;
+  padding: 0 10px;
+}

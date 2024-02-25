@@ -1,0 +1,144 @@
+(defwidget weather []
+  (image :path "/home/romeo/.config/eww/icons/01d.svg"
+    :image-width 16 
+  )
+)
+
+(defwidget bar []
+  (centerbox :orientation "h"
+    (box :orientation "h" :space-evenly false (acivewindowname) )
+    (box :orientation "h" :space-evenly false (label :text " ${time} -  ${current_temp}") 
+      (weather) 
+    )
+    (sidestuff)
+  )
+)
+
+(defwidget acivewindowname []
+  (box :class "acivewindowname"
+    (label :text windowname )
+  )
+)
+
+(defwidget volume [?class]
+  (box :space-evenly false
+    :class "hover-module ${class}"
+    (revealer-on-hover :class "hl-on-hover"
+      :var revealVolume
+      :varname "revealVolume"
+      :transition "slideleft"
+      :class "volume"
+      
+      (hovered-sign :var revealVolume
+        (label :text "")
+        (label :text "")
+      )
+      (metric :icon ""
+        :class "volume"
+        :value volume
+      :onchange "amixer -D pulse sset Master {}%")
+    "    ")
+  )
+)
+
+(defwidget sidestuff []
+  (box :class "sidestuff" :orientation "h" :space-evenly false :halign "end" :spacing 10
+    (box :orientation "h" :spacing 2 :space-evenly false :halign "end"
+      (volume)
+      (spotify)
+      (docker)
+      ;(github)
+      (mantis_assined_jobs)
+      (redis_db_status)
+      (notifications)
+    )
+  )
+)
+
+;;(defwidget github []
+;;  (clickbox :var revealGithub :varname "revealGithub" :transition "slideleft"
+;;    (label :class "github" :text "   "  )
+;;    (box
+;;      :class "github"
+;;      :space-evenly false
+;;      :spacing 10
+;;      ;(literal :class "github-text" :content githubInfo)
+;;    )
+;;  )
+;;)
+
+(defwidget mantis_assined_jobs [?class]
+  (box :space-evenly false
+    :class "hover-module ${class}"
+    (label :text "  - ${mantis_cnt_jobs}")
+  )
+)
+
+(defwidget redis_db_status [?class]
+  (box :space-evenly true
+    :class "redis, ${redisatus}"
+    (label :text " ")
+  )
+)
+
+(defwidget notifications [?class]
+  (box :space-evenly false
+    :class "hover-module ${class}"
+    (revealer-on-hover :class "hl-on-hover"
+      :var revealNotify
+      :varname "revealNotify"
+      :transition "slideleft"
+      :class "notifications"
+      
+      (hovered-sign :var revealNotify
+        (label :class "notifications" :text "")
+        (label :class "notifications" :text "")
+      )
+      (button :onclick "playerctl play-pause" (label :class "notifications" :text " ${notifications} "))
+    "  ")
+  )
+)
+
+(defwidget music []
+  (box :class "music"
+    :orientation "h"
+    :space-evenly false
+    :halign "center"
+    {music != "" ? "🎵${music}" : ""}
+  )
+)
+
+(defwidget spotify [?class]
+  (box :space-evenly false
+    :class "hover-module ${class}"
+    (revealer-on-hover :class "hl-on-hover"
+      :var revealSpotify
+      :varname "revealSpotify"
+      :transition "slideleft"
+      :class "spotify"
+      
+      (hovered-sign :var revealSpotify
+        (label :class "spotify" :text "")
+        (label :class "spotify" :text "")
+      )
+      (button :onclick "playerctl play-pause" (label :class "spotify" :text " ${music} "))
+    "   - ${ musicStatus == "Playing" ? "" : "" }")
+  )
+)
+
+(defwidget docker []
+  (clickbox :var revealDocker :varname "revealDocker" :transition "slideleft"
+    (label :class "docker" :text "  ${dockerContainers} "  )
+    (box
+      :class "docker"
+      :space-evenly false
+      :spacing 10
+      
+      (termbutton :command "eww update revealDocker=false && lazydocker" :class "ok" :width "1400" :text " Lazydocker" :floating true)
+      ;(button :onclick "eww update revealDocker=false && docker system prune -f" :class "good" (label :text " Reclaim space")
+        
+        (button :onclick "eww update revealDocker=false && (docker ps -qa | xargs docker stop || true) " :class "warning" (label :text " Stop all containers")        )
+      )
+    )
+  )
+  

@@ -1,0 +1,16 @@
+(defwidget termbutton [command ?text ?floating ?width ?height]
+  (button :onclick "kitty -- sh -c '${floating == false ? "" : "i3-msg floating enable && clear && i3-msg resize set ${width == "" ? "800" : "${width}" }px ${height == "" ? "600" : "${height}" }px && i3-msg move position center && " } ${command}'"
+    (label :text text)
+  )
+)
+
+(defwidget icon-module [icon ?class ?visible]
+  (box :class "${class} icon-module"
+    :orientation "h"
+    :halign "start"
+    :space-evenly false
+    :visible {visible ?: true} ; because the argument is optional
+    (label :class "icon-module__icon" :text "${icon}")
+    (children)
+  )
+)

@@ -1,0 +1,38 @@
+; Add the includes
+
+(include "variables.yuck")
+(include "controls.yuck")
+(include "listeners.yuck")
+(include "metrics.yuck")
+(include "pollers.yuck")
+(include "revealer.yuck")
+(include "topbar.yuck")
+(include "bottombar.yuck")
+
+(defwindow topbar
+  :monitor 0
+  :windowtype "dock"
+  :geometry (geometry 
+    :x "0%"
+    :y "0%"
+    :width "100%"
+    :height "10px"
+  :anchor "top center")
+  :exclusive true
+  (bar)
+)
+
+(defwindow bottombar
+  :monitor 0
+  :windowtype "dock"
+  :geometry (geometry 
+    :x "0%"
+    :y "0%"
+    :width "100%"
+    :height "10px"
+  :anchor "bottom center")
+  :exclusive true
+  (bottombar)
+)
+  
+  

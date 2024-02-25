@@ -1,0 +1,9 @@
+#! /bin/sh
+killall nm-applet
+killall picom
+killall variety
+killall volumeiconQ
+nm-applet &
+picom &
+variety &
+volumeicon &

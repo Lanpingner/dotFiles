@@ -1,0 +1,43 @@
+(defwidget bottombar []
+  (centerbox :orientation "h"
+    (box :halign "start" :orientation "h" :space-evenly false (workspaces))
+    (box :halign "end"   :orientation "h" :space-evenly false)
+    (box :halign "end"   :orientation "h" :space-evenly false
+      ;(box :class "ipinfo" (label :text getip))
+        ;(box :class "ipinfo" (label :text EWW_TEMPS))
+        ;(box :class "ipinfo" (label :text {EWW_BRIGHTNESS["intel_backlight"].percent}))
+        (box :class "ipinfo" (label :text EWW_IPV4))
+      (metric :icon bati
+      :value batp)
+      (metric :icon ""
+        :onclick "htop --sort-key PERCENT_MEM"
+      :value {EWW_RAM.used_mem_perc})
+      (metric :icon ""
+        :onclick "htop --sort-key PERCENT_CPU"
+      :value {EWW_CPU.avg})
+      (metric :icon ""
+        :onclick "mc"
+        :value "${round(EWW_DISK["/"].used_perc, 0)}")
+      ;(network)
+      (box :class "timeinfo" (label :text date))
+    )
+  )
+)
+
+
+(defwidget workspaces []
+  (literal :content workspace))
+
+;;(defwidget network []
+;;  (box :orientation "h" :space-evenly false (label :text "${interfaceId}: ${round(EWW_NET[interfaceId].NET_UP / 1000000, 2)}")
+;;    (label :class {round(EWW_NET[interfaceId].NET_UP / 1000000, 2) > 0.1 ?
+;;      round(EWW_NET[interfaceId].NET_UP / 1000000, 2) > 5 ?
+;;      "veryuplink" : "uplink" : "noactive"} :text "  "
+;;    )
+;;    (label :text "${round(EWW_NET[interfaceId].NET_DOWN / 1000000, 2)}")
+;;    (label :class {round(EWW_NET[interfaceId].NET_DOWN / 1000000, 2) > 0.1 ?
+;;      round(EWW_NET[interfaceId].NET_DOWN / 1000000, 2) > 10 ?
+;;      "verydownlink" : "downlink" : "noactive"} :text "  "
+;;    )
+;;  )
+;;)

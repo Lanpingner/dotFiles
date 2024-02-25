@@ -1,0 +1,11 @@
+export TERM="xterm-256color"                      # getting proper colors
+export HISTCONTROL=ignoredups:erasedups           # no duplicate entries
+export ALTERNATE_EDITOR=""                        # setting for emacsclient
+export EDITOR="vim"              # $EDITOR use Emacs in terminal
+export VISUAL="vim"           # $VISUAL use Emacs in GUI mode
+export _JAVA_AWT_WM_NONREPARENTING=1
+export MANPAGER="nvim -c 'set ft=man' -"
+export PATH="/opt/flutter/bin:$PATH:$HOME/.cargo/bin:$HOME/.local/bin"
+export PYTHONPATH="/srv/Projects/LeviathanPyhtonLogger"
+export CHROME_EXECUTABLE=/opt/google/chrome/chrome
+export _JAVA_OPTIONS="-Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel"

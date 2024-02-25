@@ -1,0 +1,28 @@
+#!/bin/bash
+BAT=`ls /sys/class/power_supply | grep BAT | head -n 1`
+BATCAP=$(cat /sys/class/power_supply/${BAT}/capacity)
+BATSTAT=$(cat /sys/class/power_supply/${BAT}/status)
+
+if [[ "$1" == "--bat" ]]; then
+	echo "${BATCAP}" 
+elif [[ "$1" == "--bat-st" ]]; then
+	echo $BATSTAT
+elif [[ "$1" == "--bat-ico" ]]; then
+	if [ "$BATSTAT" == "Charging" ]; then
+    	echo ""
+	elif [ "$BATSTAT" == "Discharging" ]; then
+    	if [ "$BATCAP" = "100" ]; then
+			echo -e ""
+		elif [ "$BATCAP" > "75" ]; then
+			echo -e ""
+		elif [ "$BATCAP" > "50" ]; then
+			echo -e ""
+		elif [ "$BATCAP" > "25" ]; then
+			echo -e ""
+		elif [ "$BATCAP" < "5" ]; then
+			echo -e ""
+		elif [ "$BATCAP" > "10" ]; then
+			echo -e ""
+		fi
+	fi
+fi
