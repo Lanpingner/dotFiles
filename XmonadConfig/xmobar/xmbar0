@@ -1,0 +1,58 @@
+Config {
+--    position = TopW C 80,
+    font = "xft:Ubuntu:weight=bold:pixelsize=11:antialias=true:hinting=true"
+    , additionalFonts = [ "xft:Mononoki:pixelsize=11:antialias=true:hinting=true"
+                           , "xft:Font Awesome 5 Free Solid:pixelsize=12"
+                           , "xft:Font Awesome 5 Brands:pixelsize=12"
+                           ]
+    position = Top,
+    border = BottomB,
+    borderColor = "grey",
+    bgColor = "#000000",
+    fgColor = "#ffffff"
+       -- general behavior
+    ,lowerOnStart =     True    -- send to bottom of window stack on start
+    ,hideOnStart =      False   -- start with window unmapped (hidden)
+    ,allDesktops =      True    -- show on all desktops
+    ,overrideRedirect = True    -- set the Override Redirect flag (Xlib)
+    ,pickBroadest =     False   -- choose widest display (multi-monitor)
+    ,persistent =       True    -- enable/disable hiding (True = disabled)
+    ,iconRoot     = ".xmonad/xpm/"  -- default: "."
+    commands = [
+        Run MultiCpu ["-t","Cpu:<total0>% ","-L","30","-H","60","-h","#FFB6B0","-l","#CEFFAC","-n","#FFFFCC","-w","3"] 10,
+        Run Memory ["-t","Mem:<usedratio>%","-H","8192","-L","4096","-h","#FFB6B0","-l","#CEFFAC","-n","#FFFFCC"] 10,
+        Run Swap ["-t","Swap:<usedratio>%","-H","1024","-L","512","-h","#FFB6B0","-l","#CEFFAC","-n","#FFFFCC"] 10,
+       --- Run Network "eth0" ["-t","Net: <rx>, <tx>","-H","200","-L","10","-h","#FFB6B0","-l","#CEFFAC","-n","#FFFFCC"] 10,
+        --Run Date "%a %b %_d %l:%M" "date" 10
+        Run Date "<fn=2>\xf017</fn> %D / %l:%M" "date" 10
+        ,Run Battery        [ "--template" , "Batt: <acstatus>"
+                             , "--Low"      , "10"        -- units: %
+                             , "--High"     , "80"        -- units: %
+                             , "--low"      , "darkred"
+                             , "--normal"   , "darkorange"
+                             , "--high"     , "darkgreen"
+
+                             , "--" -- battery specific options
+                                       -- discharging status
+                                       , "-o"	, "<left>% (<timeleft>)"
+                                       -- AC "on" status
+                                       , "-O"	, "<fc=#dAA520>Charging</fc>"
+                                       -- charged status
+                                       , "-i"	, "<fc=#006000>Charged</fc>"
+                             ] 50
+        ,Run UnsafeStdinReader
+        ,Run DynNetwork     [ "--template" , "Net: <tx>kB/s|<rx>kB/s"
+                             , "--Low"      , "1000"       -- units: B/s
+                             , "--High"     , "5000"       -- units: B/s
+                             , "--low"      , "darkgreen"
+                             , "--normal"   , "darkorange"
+                             , "--high"     , "darkred"
+                             ] 10
+        ,Run Com "/home/romeo/scripts/getip.sh" [] "getip" 10
+        -- Script that dynamically adjusts xmobar padding depending on number of trayer icons.
+        , Run Com ".config/xmobar/trayer-padding-icon.sh" [] "trayerpad" 20
+    ],
+    sepChar = "%",
+    alignSep = "}{",
+    template = "<icon=haskell_20.xpm/>|%UnsafeStdinReader% }{ %multicpu%|<box type=Bottom width=2 mb=2 color=#8FBCBB> %memory%|%swap%</box>|<fc=#dAA520>%getip%</fc>|%dynnetwork% | %battery% | <fc=#FFFFCC>%date%</fc> %trayerpad%"
+}
