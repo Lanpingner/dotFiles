@@ -1,38 +1,30 @@
-@import '/tmp/ags/scss/options';
-@import './variables';
+* {
+    all: unset;
+    font-family: "CaskaydiaCove Nerd Font";
+}
 
-// common
-@import './common/unset';
-@import './common/widget';
-@import './common/button';
-@import './common/a11y-button';
-@import './common/floating-widget';
-@import './common/slider';
-@import './common/shader';
-@import './common/scrollable';
-@import './common/switch';
-@import './common/hidden';
-@import './common/text-border';
-@import './common/tooltip';
-@import './common/menu';
-@import './common/spacing';
 
-// widgets
-@import './widgets/about';
-@import './widgets/applauncher';
-@import './widgets/bar';
-@import './widgets/desktop';
-@import './widgets/notifications';
-@import './widgets/overview';
-@import './widgets/osd';
-@import './widgets/dashboard';
-@import './widgets/dock';
-@import './widgets/powermenu';
-@import './widgets/lockscreen';
-@import './widgets/media';
-@import './widgets/quicksettings';
-@import './widgets/settings';
-//@import './widgets/network';
+//general
+@import "colors";
+@import "common";
 
-// additional overrides
-@import '/tmp/ags/scss/additional';
+//modules
+@import "audio";
+@import "bar";
+@import "chatGPT";
+@import "clock";
+@import "indicator";
+@import "launcher";
+@import "mpris";
+@import "notifications";
+@import "powermenu";
+@import "quicksettings";
+@import "roundedCorner";
+@import "systemtray";
+@import "title";
+@import "weather";
+@import "workspaces";
+@import "batterbar";
+@import "emptybox";
+@import "screenshot";
+@import "ipbox"
