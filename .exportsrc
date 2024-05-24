@@ -8,4 +8,5 @@ export MANPAGER="nvim -c 'set ft=man' -"
 export PATH="/opt/flutter/bin:$PATH:$HOME/.cargo/bin:$HOME/.local/bin"
 export PYTHONPATH="/srv/Projects/LeviathanPyhtonLogger"
 export CHROME_EXECUTABLE=/opt/google/chrome/chrome
-export _JAVA_OPTIONS="-Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel"
+export ANDROID_HOME=/home/romeo/Android
+export ANDROID_SDK_ROOT=$ANDROID_HOME/Sdk

@@ -78,19 +78,32 @@ const Center = () => Widget.Box({
             expand: true,
             children: [
                 Widget.Label({ label: " " }),
+                //Widget.Label({
+                //    class_name: "iplabel",
+                //    label: network.wifi.bind("ipv4_address").as(ip4 => {
+                //        return ip4?.map(addressObj => addressObj?.get_address()).join(",");
+                //    }),
+                //}),
                 Widget.Label({
                     class_name: "iplabel",
-                    label: network.wifi.bind("ipv4-address").as(ip4 => {
-                        return ip4.map(addressObj => addressObj?.get_address()).join(",");
-                    }),
+                    label: network.wifi.nmDevice.bind("ipv4_address").as(ipv4_address => ipv4_address || "No wifi IP")
                 }),
                 Widget.Label({ label: " " }),
                 Widget.Label({
                     class_name: "iplabel",
-                    label: network.wired?.bind("ipv4-address").as(ip4 => {
-                        return ip4.map(addressObj => addressObj?.get_address()).join(",");
-                    }),
-                })
+                    label: network.wired.nmDevice.bind("ipv4_address").as(ipv4_address => ipv4_address || "No wired IP"),
+
+                }),
+                //Widget.Label({
+                //    class_name: "iplabel",
+                //    label: network.wired?.bind("ipv4_address").as(ip4 => {
+                //        if (Array.isArray(ip4)) {
+                //            return ip4.map(addressObj => addressObj?.get_address()).join(",");
+                //        } else {
+                //            return ""; // Or any other appropriate handling for non-array case
+                //        }
+                //    })
+                //}),
             ]
         }),
         RoundedAngleEnd("topright", { class_name: "angle" })

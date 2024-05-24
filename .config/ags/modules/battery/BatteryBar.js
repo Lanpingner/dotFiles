@@ -4,7 +4,7 @@ const Indicator = () => Widget.Icon({
     size: 25,
     setup: self => self.hook(battery, () => {
         self.icon = battery.charging || battery.charged
-            ? "battery-flash-symbolic"
+            ? "battery-caution-charging"
             : battery.icon_name;
     }),
 });
