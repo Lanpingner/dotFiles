@@ -5,8 +5,8 @@ export EDITOR="vim"              # $EDITOR use Emacs in terminal
 export VISUAL="vim"           # $VISUAL use Emacs in GUI mode
 export _JAVA_AWT_WM_NONREPARENTING=1
 export MANPAGER="nvim -c 'set ft=man' -"
-export PATH="/opt/flutter/bin:$PATH:$HOME/.cargo/bin:$HOME/.local/bin"
 export PYTHONPATH="/srv/Projects/LeviathanPyhtonLogger"
 export CHROME_EXECUTABLE=/opt/google/chrome/chrome
-export ANDROID_HOME=/home/romeo/Android
-export ANDROID_SDK_ROOT=$ANDROID_HOME/Sdk
+export ANDROID_HOME=$HOME/android-sdk
+export PATH="$HOME/.pub-cache/bin:/home/romeo/Flutter/bin:$PATH:$ANDROID_HOME/platform-tools"
+export JAVA_HOME=/usr/lib/jvm/java-17-openjdk

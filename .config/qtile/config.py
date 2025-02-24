@@ -38,7 +38,7 @@ keys = [
     Key([mod, "control"], "j", lazy.layout.grow_down(), desc="Grow window down"),
     Key([mod, "control"], "k", lazy.layout.grow_up(), desc="Grow window up"),
     Key([mod], "n", lazy.layout.normalize(), desc="Reset all window sizes"),
-    Key([mod], "p", lazy.spawn("rofi -combi-modi window,drun,ssh -theme solarized -font \"hack 10\" -show combi -icon-theme \"Papirus\" -show-icons"), desc="Rofi runner"),
+    Key([mod], "r", lazy.spawn("rofi -combi-modi window,drun,ssh -theme solarized -font \"hack 10\" -show combi -icon-theme \"Papirus\" -show-icons"), desc="Rofi runner"),
     # Toggle between split and unsplit sides of stack.
     # Split = all windows displayed
     # Unsplit = 1 window displayed, like Max layout, but still with
@@ -54,13 +54,13 @@ keys = [
 
         desc="Toggle between split and unsplit sides of stack",
     ),
-    Key([mod, "shift"], "Return", lazy.spawn(terminal), desc="Launch terminal"),
+    Key([mod], "q", lazy.spawn(terminal), desc="Launch terminal"),
     # Toggle between different layouts as defined below
     Key([mod], "Tab", lazy.next_layout(), desc="Toggle between layouts"),
-    Key([mod, "shift"], "c", lazy.window.kill(), desc="Kill focused window"),
+    Key([mod], "c", lazy.window.kill(), desc="Kill focused window"),
     Key([mod, "control"], "r", lazy.reload_config(), desc="Reload the config"),
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
-    Key([mod], "r", lazy.spawncmd(), desc="Spawn a command using a prompt widget"),
+    Key([mod, "control"], "r", lazy.spawncmd(), desc="Spawn a command using a prompt widget"),
 ]
 
 #groups = [Group(i) for i in "123456789"]
@@ -160,7 +160,7 @@ screens = [
                 widget.Clock(format="%Y-%m-%d %a %I:%M %p"),
                 #widget.MemoryGraph(type='line'),
             ],
-            24,
+            32,
              #border_width=[2, 0, 2, 0],  # Draw top and bottom borders
              #border_color=["ff00ff", "000000", "ff00ff", "000000"]  # Borders are magenta
         ),
@@ -188,7 +188,7 @@ screens = [
                     mousecallbacks = {'Button1':'shutdown now'}
                 ),
             ],
-            28,
+            32,
         )
     ),
 ]

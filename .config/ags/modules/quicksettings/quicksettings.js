@@ -11,9 +11,10 @@ import BluetoothList from "../bluetooth/index.js";
 // @ts-ignore
 import Bluetooth from "resource:///com/github/Aylur/ags/service/bluetooth.js";
 import Network from "resource:///com/github/Aylur/ags/service/network.js";
-import { Switch } from "../widgets/widgets.js";
+//import { Switch } from "../widgets/widgets.js";
 import { Cava } from "../cava/index.js";
 import { LyricsTerminal } from "../vte/index.js";
+import { Switch } from "resource:///com/github/Aylur/ags/widget.js";
 
 /**
  * @param {import('types/@girs/gtk-3.0/gtk-3.0').Gtk.Widget} content
