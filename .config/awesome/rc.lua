@@ -14,18 +14,26 @@ local beautiful = require("beautiful")
 local naughty = require("naughty")
 local menubar = require("menubar")
 local hotkeys_popup = require("awful.hotkeys_popup")
-local battery_widget = require("./widgets/battery")
-local ip_info_widget = require("./widgets/ip_info")
+
 local screenshot = require("./utils/screenshot")
-local blue_wid = require("./widgets/blue")
+
 -- Enable hotkeys help widget for VIM and other apps
 -- when client with a matching name is opened:
 -- Set your custom font
 beautiful.font = "Fira Code Bold 14"
 require("awful.hotkeys_popup.keys")
 
+local xresources = require("beautiful.xresources")
+local dpi = xresources.apply_dpi
 local tags = require("tags")
 tags.setup_tags()
+
+local themeName = "test_1"
+beautiful.init(gears.filesystem.get_configuration_dir() .. "themes/" .. themeName .. "/theme.lua")
+
+require("topBar")
+
+naughty.notify({ title = "Awesome", text = "Loaded rc.lua", timeout = 5 })
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -61,9 +69,6 @@ end
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
 --beautiful.init(gears.filesystem.get_themes_dir() .. "default/theme.lua")
-
-local themeName = "test_1"
-beautiful.init(gears.filesystem.get_configuration_dir() .. "themes/" .. themeName .. "/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
 terminal = "alacritty"
@@ -132,11 +137,6 @@ menubar.utils.terminal = terminal -- Set the terminal for applications that requ
 -- }}}
 
 -- Keyboard map indicator and switcher
-mykeyboardlayout = awful.widget.keyboardlayout()
-
--- {{{ Wibar
--- Create a textclock widget
-mytextclock = wibox.widget.textclock()
 
 -- Create a wibox for each screen and add it
 local taglist_buttons = gears.table.join(
@@ -181,110 +181,6 @@ local tasklist_buttons = gears.table.join(
 	end)
 )
 
-local function set_wallpaper(s)
-	-- Wallpaper
-	if beautiful.wallpaper then
-		local wallpaper = beautiful.wallpaper
-		-- If wallpaper is a function, call it with the screen
-		if type(wallpaper) == "function" then
-			wallpaper = wallpaper(s)
-		end
-		gears.wallpaper.maximized("/home/romeo/Photos/background/index.jpg", s, true)
-	end
-end
-
--- Re-set wallpaper when a screen's geometry changes (e.g. different resolution)
-screen.connect_signal("property::geometry", set_wallpaper)
-
--- Function to update the battery widget
-
-awful.screen.connect_for_each_screen(function(s)
-	-- Wallpaper
-	set_wallpaper(s)
-
-	-- Each screen has its own tag table.
-	--awful.tag({ "1", "2", "3", "4", "5", "6", "7", "8", "9" }, s, awful.layout.layouts[1])
-
-	-- Create a promptbox for each screen
-	s.mypromptbox = awful.widget.prompt()
-	-- Create an imagebox widget which will contain an icon indicating which layout we're using.
-	-- We need one layoutbox per screen.
-	s.mylayoutbox = awful.widget.layoutbox(s)
-	s.mylayoutbox:buttons(gears.table.join(
-		awful.button({}, 1, function()
-			awful.layout.inc(1)
-		end),
-		awful.button({}, 3, function()
-			awful.layout.inc(-1)
-		end),
-		awful.button({}, 4, function()
-			awful.layout.inc(1)
-		end),
-		awful.button({}, 5, function()
-			awful.layout.inc(-1)
-		end)
-	))
-	-- Create a taglist widget
-	s.mytaglist = awful.widget.taglist({
-		screen = s,
-		filter = awful.widget.taglist.filter.all,
-		buttons = taglist_buttons,
-	})
-
-	-- Create a tasklist widget
-	s.mytasklist = awful.widget.tasklist({
-		screen = s,
-		filter = awful.widget.tasklist.filter.currenttags,
-		buttons = tasklist_buttons,
-	})
-
-	-- Create the wibox
-	s.mywibox = awful.wibar({ position = "top", screen = s, height = 32 })
-
-	-- Add widgets to the wibox
-	s.mywibox:setup({
-		layout = wibox.layout.align.horizontal,
-		{ -- Left widgets
-			layout = wibox.layout.fixed.horizontal,
-			mylauncher,
-			s.mytaglist,
-			s.mypromptbox,
-		},
-		s.mytasklist, -- Middle widget
-		{ -- Right widgets
-			layout = wibox.layout.fixed.horizontal,
-			mykeyboardlayout,
-			wibox.widget.systray(),
-			blue_wid({ timeout = 15 }),
-			ip_info_widget({ timeout = 15 }),
-			battery_widget({
-				ac = "AC",
-				adapter = "BAT0",
-				ac_prefix = "AC: ",
-				battery_prefix = "Bat: ",
-				percent_colors = {
-					{ 25, "red" },
-					{ 50, "orange" },
-					{ 999, "green" },
-				},
-				listen = true,
-				timeout = 10,
-				widget_text = "${AC_BAT}${color_on}${percent}%${color_off}",
-				widget_font = "Deja Vu Sans Mono 16",
-				tooltip_text = "Battery ${state}${time_est}\nCapacity: ${capacity_percent}%",
-				alert_threshold = 5,
-				alert_timeout = 0,
-				alert_title = "Low battery !",
-				alert_text = "${AC_BAT}${time_est}",
-				alert_icon = "~/Downloads/low_battery_icon.png",
-				warn_full_battery = true,
-				full_battery_icon = "~/Downloads/full_battery_icon.png",
-			}),
-			mytextclock,
-			s.mylayoutbox,
-		},
-	})
-end)
 -- }}}
 
 -- {{{ Mouse bindings

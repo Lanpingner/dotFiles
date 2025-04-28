@@ -1,0 +1,28 @@
+(defpoll weather :interval "60s" "echo ok")
+
+(defpoll volume :interval "1s"  "scripts/getvol")
+
+(defpoll time :interval "10s"  "date '+%H:%M'")
+
+(defpoll date :interval "10s"  "date '+%b %d, %Y'")
+
+;(defpoll wirelessId :interval "60s"  "iwgetid -r")
+
+;(defpoll interfaceId :interval "60s" "route | grep default | head -n1 | awk '{print $8}'")
+
+defpoll dockerContainers :interval "10s" "docker ps -q | wc -l")
+
+(defpoll dockerImages :interval "10s" "docker images -q | wc -l")
+
+;(defpoll githubInfo :interval "90m" "/home/romeo/.local/bin/github-info aquasecurity:tfsec")
+
+(defpoll batp :interval "10s" "scripts/getbat --bat")
+
+(defpoll bati :interval "20s" "scripts/getbat --bat-ico")
+
+(defpoll redisatus :interval "10s" "python3 /home/romeo/scripts/get_service_stats.py redis")
+;(defpoll getip :interval "2s" "/home/romeo/scripts/getip.sh")
+
+(defpoll mantis_cnt_jobs :interval "5s" "redis-cli -s /run/redis/redis.sock get mantis_01_ass_cnt")
+
+(defpoll current_temp :interval "5s" "redis-cli -s /run/redis/redis.sock get current_temp")

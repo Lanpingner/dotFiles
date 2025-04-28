@@ -1,6 +1,6 @@
 return {
-    { "rcarriga/nvim-notify"},
-    { "stevearc/dressing.nvim"},
-    { "folke/noice.nvim"},
-    { "akinsho/bufferline.nvim", enabled = false }
+  { "rcarriga/nvim-notify", enabled = false },
+  { "stevearc/dressing.nvim" },
+  { "folke/noice.nvim", enabled = false },
+  { "akinsho/bufferline.nvim", enabled = false },
 }

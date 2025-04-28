@@ -1,8 +1,8 @@
-export TERM="xterm-256color"                      # getting proper colors
 export HISTCONTROL=ignoredups:erasedups           # no duplicate entries
 export ALTERNATE_EDITOR=""                        # setting for emacsclient
 export EDITOR="vim"              # $EDITOR use Emacs in terminal
 export VISUAL="vim"           # $VISUAL use Emacs in GUI mode
+export TERM="xterm-256color"
 export _JAVA_AWT_WM_NONREPARENTING=1
 export MANPAGER="nvim -c 'set ft=man' -"
 export PYTHONPATH="/srv/Projects/LeviathanPyhtonLogger"

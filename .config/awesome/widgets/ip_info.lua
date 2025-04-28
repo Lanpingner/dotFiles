@@ -51,7 +51,7 @@ local function format_interfaces(interfaces, default_iface)
 	for _, iface in ipairs(interfaces) do
 		local prefix = iface.interface == default_iface and "* " or "  "
 		local color = iface.interface == default_iface and "green" or "white"
-		local ssid = iface.interface == default_iface and get_ssid(iface.interface) or nil
+		local ssid = (iface.interface == default_iface and iface.interface ~= nil) and get_ssid(iface.interface) or nil
 		local ssid_text = ssid and " (" .. ssid .. ")" or ""
 		formatted = formatted .. prefix .. color_text(iface.interface .. ": " .. iface.ip .. ssid_text, color) .. "\n"
 	end
@@ -84,9 +84,9 @@ end
 
 function network_widget:update()
 	local interfaces = get_ip_addresses()
-	local default_iface = get_default_interface()
+	local default_iface = get_default_interface() or ""
 
-	if #interfaces == 0 then
+	if #interfaces == 0 or default_iface == "" then
 		self.widget:set_text("No active interfaces")
 		self.tooltip:set_text("No active network interfaces found.")
 	else
@@ -98,8 +98,8 @@ function network_widget:update()
 				break
 			end
 		end
-
-		self.widget:set_markup(": " .. color_text(default_iface .. " (" .. default_ip .. ")", "green"))
+		local label_iface = default_iface ~= "" and default_iface or "?"
+		self.widget:set_markup(": " .. color_text(label_iface .. " (" .. default_ip .. ")", "green"))
 		self.tooltip:set_markup(formatted)
 	end
 end

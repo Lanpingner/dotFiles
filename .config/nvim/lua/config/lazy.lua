@@ -19,7 +19,6 @@ require("lazy").setup({
     { import = "lazyvim.plugins.extras.lang.clangd" },
     { import = "lazyvim.plugins.extras.lang.json" },
     { import = "lazyvim.plugins.extras.lang.python" },
-    { import = "lazyvim.plugins.extras.linting.eslint" },
     { import = "plugins" },
   },
   lockfile = vim.fn.stdpath("cache") .. "/lazy-lock.json",
