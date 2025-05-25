@@ -31,8 +31,6 @@ tags.setup_tags()
 local themeName = "test_1"
 beautiful.init(gears.filesystem.get_configuration_dir() .. "themes/" .. themeName .. "/theme.lua")
 
-require("topBar")
-
 naughty.notify({ title = "Awesome", text = "Loaded rc.lua", timeout = 5 })
 
 -- {{{ Error handling
@@ -134,53 +132,6 @@ mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon, menu = myma
 
 -- Menubar configuration
 menubar.utils.terminal = terminal -- Set the terminal for applications that require it
--- }}}
-
--- Keyboard map indicator and switcher
-
--- Create a wibox for each screen and add it
-local taglist_buttons = gears.table.join(
-	awful.button({}, 1, function(t)
-		t:view_only()
-	end),
-	awful.button({ modkey }, 1, function(t)
-		if client.focus then
-			client.focus:move_to_tag(t)
-		end
-	end),
-	awful.button({}, 3, awful.tag.viewtoggle),
-	awful.button({ modkey }, 3, function(t)
-		if client.focus then
-			client.focus:toggle_tag(t)
-		end
-	end),
-	awful.button({}, 4, function(t)
-		awful.tag.viewnext(t.screen)
-	end),
-	awful.button({}, 5, function(t)
-		awful.tag.viewprev(t.screen)
-	end)
-)
-
-local tasklist_buttons = gears.table.join(
-	awful.button({}, 1, function(c)
-		if c == client.focus then
-			c.minimized = true
-		else
-			c:emit_signal("request::activate", "tasklist", { raise = true })
-		end
-	end),
-	awful.button({}, 3, function()
-		awful.menu.client_list({ theme = { width = 250 } })
-	end),
-	awful.button({}, 4, function()
-		awful.client.focus.byidx(1)
-	end),
-	awful.button({}, 5, function()
-		awful.client.focus.byidx(-1)
-	end)
-)
-
 -- }}}
 
 -- {{{ Mouse bindings
@@ -612,10 +563,12 @@ client.connect_signal("mouse::enter", function(c)
 	c:emit_signal("request::activate", "mouse_enter", { raise = false })
 end)
 
-client.connect_signal("focus", function(c)
-	c.border_color = beautiful.border_focus
-end)
-client.connect_signal("unfocus", function(c)
-	c.border_color = beautiful.border_normal
-end)
+--client.connect_signal("focus", function(c)
+--	c.border_color = beautiful.border_focus
+--end)
+--client.connect_signal("unfocus", function(c)
+--	c.border_color = beautiful.border_normal
+--end)
 -- }}}
+--
+require("topBar")

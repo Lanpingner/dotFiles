@@ -8,6 +8,8 @@ local aria2c_widget = require("./widgets/aria2c")
 local battery_widget = require("./widgets/battery")
 local ip_info_widget = require("./widgets/ip_info")
 --local weather = require("./widgets/weather")
+local otp_list = require("./widgets/otp_list")
+local volume_widget = require("awesome-wm-widgets.volume-widget.volume")
 local function set_wallpaper(s)
 	-- Wallpaper
 	if beautiful.wallpaper then
@@ -66,6 +68,10 @@ local tasklist_buttons = gears.table.join(
 )
 
 mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon, menu = mymainmenu })
+
+local function boxed(widget, bg_color)
+	return wibox.container.margin(wibox.container.background(widget, bg_color, beautiful.border_width), 4, 4, 2, 2)
+end
 
 awful.screen.connect_for_each_screen(function(s)
 	-- Wallpaper
@@ -146,6 +152,9 @@ awful.screen.connect_for_each_screen(function(s)
 
 	s.myKeyboardLayout = awful.widget.keyboardlayout()
 
+	s.otp = otp_list({
+		timeout = 5,
+	})
 	-- Add widgets to the wibox
 	s.mywibox:setup({
 		layout = wibox.layout.align.horizontal,
@@ -159,13 +168,15 @@ awful.screen.connect_for_each_screen(function(s)
 		s.mytasklist, -- Middle widget
 		{ -- Right widgets
 			layout = wibox.layout.fixed.horizontal,
-			s.myKeyboardLayout,
-			wibox.widget.systray(),
-			s.blueTooth,
-			s.ipInfo,
-			s.aria2c,
-			s.battery,
-			s.myTextClock,
+			boxed(s.myKeyboardLayout, "#ffcc00"),
+			boxed(wibox.widget.systray(), "#333333"), -- Dark grey
+			boxed(volume_widget({ widget_type = "horizontal_bar" }), "#0066cc"),
+			boxed(s.blueTooth.widget, "#009688"), -- Teal
+			boxed(s.ipInfo.widget, "#673ab7"),
+			boxed(s.aria2c.widget, "#3f51b5"),
+			s.otp.widget,
+			boxed(s.battery.widget, "#4caf50"),
+			boxed(s.myTextClock, "#f44336"),
 		},
 	})
 end)
