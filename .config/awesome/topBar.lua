@@ -10,6 +10,7 @@ local ip_info_widget = require("./widgets/ip_info")
 --local weather = require("./widgets/weather")
 local otp_list = require("./widgets/otp_list")
 local volume_widget = require("awesome-wm-widgets.volume-widget.volume")
+
 local function set_wallpaper(s)
 	-- Wallpaper
 	if beautiful.wallpaper then
@@ -19,6 +20,7 @@ local function set_wallpaper(s)
 			wallpaper = wallpaper(s)
 		end
 		gears.wallpaper.maximized("/home/romeo/Pictures/background/index.jpg", s, true)
+		--gears.wallpaper.maximized(wallpaper, s, true)
 	end
 end
 
@@ -70,8 +72,66 @@ local tasklist_buttons = gears.table.join(
 mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon, menu = mymainmenu })
 
 local function boxed(widget, bg_color)
-	return wibox.container.margin(wibox.container.background(widget, bg_color, beautiful.border_width), 4, 4, 2, 2)
+	local bg = bg_color or "#22222288"
+	return wibox.container.margin(
+		wibox.container.background(
+			wibox.widget({
+				widget,
+				widget = wibox.container.margin(_, 6, 6),
+			}),
+			bg,
+			function(cr, width, height)
+				gears.shape.rounded_rect(cr, width, height, 8)
+			end
+		),
+		4,
+		4,
+		4,
+		4
+	)
 end
+
+local shared_battery_widget = battery_widget({
+	ac = "AC",
+	adapter = "BAT0",
+	ac_prefix = "AC: ",
+	battery_prefix = "Bat: ",
+	percent_colors = {
+		{ 25, "red" },
+		{ 50, "orange" },
+		{ 999, "green" },
+	},
+	listen = true,
+	timeout = 10,
+	widget_text = "${AC_BAT}${color_on}${percent}%${color_off}",
+	widget_font = "Deja Vu Sans Mono 16",
+	tooltip_text = "Battery ${state}${time_est}\nCapacity: ${capacity_percent}%",
+	alert_threshold = 5,
+	alert_timeout = 0,
+	alert_title = "Low battery !",
+	alert_text = "${AC_BAT}${time_est}",
+	alert_icon = "~/Downloads/low_battery_icon.png",
+	warn_full_battery = true,
+	full_battery_icon = "~/Downloads/full_battery_icon.png",
+})
+
+local shared_ip_info_widget = ip_info_widget({
+	timeout = 10,
+})
+
+local shared_aria2c_widget = aria2c_widget({
+	timeout = 10,
+})
+
+local shared_otp_list = otp_list({
+	timeout = 5,
+})
+
+local shared_blue_wid = blue_wid({
+	timeout = 10,
+})
+
+local separator = wibox.widget.textbox("  |  ")
 
 awful.screen.connect_for_each_screen(function(s)
 	-- Wallpaper
@@ -109,42 +169,6 @@ awful.screen.connect_for_each_screen(function(s)
 		buttons = tasklist_buttons,
 	})
 
-	s.blueTooth = blue_wid({
-		timeout = 15,
-	})
-
-	s.ipInfo = ip_info_widget({
-		timeout = 10,
-	})
-
-	s.aria2c = aria2c_widget({
-		timeout = 10,
-	})
-
-	s.battery = battery_widget({
-		ac = "AC",
-		adapter = "BAT0",
-		ac_prefix = "AC: ",
-		battery_prefix = "Bat: ",
-		percent_colors = {
-			{ 25, "red" },
-			{ 50, "orange" },
-			{ 999, "green" },
-		},
-		listen = true,
-		timeout = 10,
-		widget_text = "${AC_BAT}${color_on}${percent}%${color_off}",
-		widget_font = "Deja Vu Sans Mono 16",
-		tooltip_text = "Battery ${state}${time_est}\nCapacity: ${capacity_percent}%",
-		alert_threshold = 5,
-		alert_timeout = 0,
-		alert_title = "Low battery !",
-		alert_text = "${AC_BAT}${time_est}",
-		alert_icon = "~/Downloads/low_battery_icon.png",
-		warn_full_battery = true,
-		full_battery_icon = "~/Downloads/full_battery_icon.png",
-	})
-
 	-- Create the wibox
 	s.mywibox = awful.wibar({ position = "top", screen = s, height = 32 })
 
@@ -152,8 +176,8 @@ awful.screen.connect_for_each_screen(function(s)
 
 	s.myKeyboardLayout = awful.widget.keyboardlayout()
 
-	s.otp = otp_list({
-		timeout = 5,
+	s.volume = volume_widget({
+		widget_type = "horizontal_bar",
 	})
 	-- Add widgets to the wibox
 	s.mywibox:setup({
@@ -170,12 +194,12 @@ awful.screen.connect_for_each_screen(function(s)
 			layout = wibox.layout.fixed.horizontal,
 			boxed(s.myKeyboardLayout, "#ffcc00"),
 			boxed(wibox.widget.systray(), "#333333"), -- Dark grey
-			boxed(volume_widget({ widget_type = "horizontal_bar" }), "#0066cc"),
-			boxed(s.blueTooth.widget, "#009688"), -- Teal
-			boxed(s.ipInfo.widget, "#673ab7"),
-			boxed(s.aria2c.widget, "#3f51b5"),
-			s.otp.widget,
-			boxed(s.battery.widget, "#4caf50"),
+			s.volume,
+			boxed(shared_blue_wid.widget, "#009688"), -- Teal
+			boxed(shared_ip_info_widget.widget, "#673ab7"),
+			boxed(shared_aria2c_widget.widget, "#3f51b5"),
+			boxed(shared_otp_list.widget, "#2196f3"), -- Blue
+			boxed(shared_battery_widget.widget, "#4caf50"),
 			boxed(s.myTextClock, "#f44336"),
 		},
 	})

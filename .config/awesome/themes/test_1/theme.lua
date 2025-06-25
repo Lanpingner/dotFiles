@@ -1,7 +1,3 @@
----------------------------
--- Default awesome theme --
----------------------------
-
 local theme_assets = require("beautiful.theme_assets")
 local xresources = require("beautiful.xresources")
 local dpi = xresources.apply_dpi
@@ -11,29 +7,29 @@ local themes_path = gfs.get_themes_dir()
 
 local theme = {}
 
-theme.font = "sans 12"
+theme.bg_normal = "#1E1E2E"
+theme.bg_focus = "#2D2D40"
+theme.bg_urgent = "#FF5555"
+theme.bg_minimize = "#44475A"
+theme.bg_systray = theme.bg_normal
 
---theme.bg_normal = "#222222"
-theme.fg_normal = "#D7D7D7"
-theme.fg_focus = "#F6784F"
-theme.bg_normal = "#060606"
-theme.bg_focus = "#060606"
-
---theme.bg_normal = "#060606"
---theme.bg_focus = "#535d6c"
-theme.bg_urgent = "#ff0000"
-theme.bg_minimize = "#444444"
-
---theme.fg_normal = "#aaaaaa"
---theme.fg_focus = "#ffffff"
-theme.fg_urgent = "#ffffff"
-theme.fg_minimize = "#ffffff"
+theme.fg_normal = "#F8F8F2"
+theme.fg_focus = "#8BE9FD"
+theme.fg_urgent = "#FF5555"
+theme.fg_minimize = "#6272A4"
 
 theme.useless_gap = dpi(0)
-theme.border_width = dpi(1)
-theme.border_normal = "#000000"
-theme.border_focus = "#535d6c"
-theme.border_marked = "#91231c"
+theme.border_width = dpi(0)
+theme.border_normal = "#282A36"
+theme.border_focus = "#BD93F9"
+
+theme.taglist_bg_focus = "#44475A"
+theme.taglist_fg_focus = "#50FA7B"
+
+theme.tasklist_bg_focus = "#6272A4"
+theme.tasklist_fg_focus = "#FFFFFF"
+
+theme.font = "JetBrainsMono Nerd Font 12"
 
 -- There are other variable sets
 -- overriding the default one when
@@ -48,11 +44,6 @@ theme.border_marked = "#91231c"
 -- Example:
 --theme.taglist_bg_focus = "#ff0000"
 
--- Generate taglist squares:
-local taglist_square_size = dpi(4)
-theme.taglist_squares_sel = theme_assets.taglist_squares_sel(taglist_square_size, theme.fg_normal)
-theme.taglist_squares_unsel = theme_assets.taglist_squares_unsel(taglist_square_size, theme.fg_normal)
-
 -- Variables set for theming notifications:
 -- notification_font
 -- notification_[bg|fg]
@@ -65,6 +56,10 @@ theme.taglist_squares_unsel = theme_assets.taglist_squares_unsel(taglist_square_
 theme.menu_submenu_icon = themes_path .. "default/submenu.png"
 theme.menu_height = dpi(15)
 theme.menu_width = dpi(100)
+
+local taglist_square_size = dpi(4)
+theme.taglist_squares_sel = theme_assets.taglist_squares_sel(taglist_square_size, theme.fg_normal)
+theme.taglist_squares_unsel = theme_assets.taglist_squares_unsel(taglist_square_size, theme.fg_normal)
 
 -- You can add as many variables as
 -- you wish and access them by using

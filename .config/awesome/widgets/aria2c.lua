@@ -3,24 +3,36 @@ local gears = require("gears")
 local wibox = require("wibox")
 local naughty = require("naughty")
 local beautiful = require("beautiful")
-
-------------------------------------------
--- Mini JSON decoder (enough for aria2c)
-------------------------------------------
-local function simple_json_decode(str)
-	local ok, result = pcall(function()
-		return load("return " .. str:gsub('"%s*:%s*', '"='):gsub('"%s*,%s*', '",'))()
-	end)
-	if ok then
-		return result
-	else
-		return nil
-	end
-end
+local json = require("dkjson")
 
 ------------------------------------------
 -- Helper functions
 ------------------------------------------
+
+local function format_eta(completed, total, speed)
+	completed = tonumber(completed)
+	total = tonumber(total)
+	speed = tonumber(speed)
+	if not completed or not total or not speed or speed == 0 then
+		return "∞"
+	end
+
+	local remaining = total - completed
+	local seconds = math.floor(remaining / speed)
+	local minutes = math.floor(seconds / 60)
+	local hours = math.floor(minutes / 60)
+
+	seconds = seconds % 60
+	minutes = minutes % 60
+
+	if hours > 0 then
+		return string.format("%dh %dm", hours, minutes)
+	elseif minutes > 0 then
+		return string.format("%dm %ds", minutes, seconds)
+	else
+		return string.format("%ds", seconds)
+	end
+end
 
 local function aria2c_status()
 	local cmd =
@@ -33,13 +45,13 @@ local function aria2c_status()
 	local result = handle:read("*a")
 	handle:close()
 
-	-- fix for curl returning empty
 	if not result or result == "" then
 		return nil
 	end
 
-	local data = simple_json_decode(result)
+	local data, _, err = json.decode(result)
 	if not data or not data.result then
+		naughty.notify({ title = "Aria2c JSON Error", text = err or "Invalid response", timeout = 5 })
 		return {}
 	end
 
@@ -51,18 +63,37 @@ local function format_downloads(downloads)
 		return "No active downloads"
 	end
 
-	local formatted = ""
+	local lines = {}
 	for _, dl in ipairs(downloads) do
-		local name = dl.bittorrent and dl.bittorrent.info.name
-			or (dl.files and dl.files[1] and dl.files[1].path:match("([^/\\]+)$") or "Unknown")
+		local name = "Unknown"
+		if dl.bittorrent and dl.bittorrent.info and dl.bittorrent.info.name then
+			name = dl.bittorrent.info.name
+		elseif dl.files and dl.files[1] and dl.files[1].path then
+			name = dl.files[1].path:match("([^/\\]+)$") or "Unknown"
+		end
+
 		local total = tonumber(dl.totalLength) or 0
 		local completed = tonumber(dl.completedLength) or 0
-		local progress = total > 0 and math.floor((completed / total) * 100) or 0
+		local dlspeed = tonumber(dl.downloadSpeed) or 0
+		local upspeed = tonumber(dl.uploadSpeed) or 0
 
-		formatted = formatted .. string.format("%s (%d%%)\n", name, progress)
+		local progress = total > 0 and math.floor((completed / total) * 100) or 0
+		local eta = format_eta(completed, total, dlspeed)
+
+		table.insert(
+			lines,
+			string.format(
+				"%s\n - %d%%, ↓ %.1f KB/s, ↑ %.1f KB/s, ETA: %s",
+				name,
+				progress,
+				dlspeed / 1024,
+				upspeed / 1024,
+				eta
+			)
+		)
 	end
 
-	return formatted
+	return table.concat(lines, "\n\n")
 end
 
 ------------------------------------------
@@ -78,7 +109,7 @@ end
 
 function aria2c_widget:init(args)
 	self.widget = wibox.widget.textbox()
-	self.widget.font = beautiful.font or "Monospace 10" -- Use theme font
+	self.widget.font = beautiful.font or "Monospace 10"
 	self.tooltip = awful.tooltip({ objects = { self.widget } })
 
 	self.timer = gears.timer({ timeout = args.timeout or 10 })

@@ -6,6 +6,7 @@ pcall(require, "luarocks.loader")
 local gears = require("gears")
 local awful = require("awful")
 require("awful.autofocus")
+require("awful.hotkeys_popup.keys")
 -- Widget and layout library
 local wibox = require("wibox")
 -- Theme handling library
@@ -15,23 +16,16 @@ local naughty = require("naughty")
 local menubar = require("menubar")
 local hotkeys_popup = require("awful.hotkeys_popup")
 
+local xresources = require("beautiful.xresources")
+local tags = require("tags")
+
 local screenshot = require("./utils/screenshot")
 
--- Enable hotkeys help widget for VIM and other apps
--- when client with a matching name is opened:
--- Set your custom font
-beautiful.font = "Fira Code Bold 14"
-require("awful.hotkeys_popup.keys")
-
-local xresources = require("beautiful.xresources")
 local dpi = xresources.apply_dpi
-local tags = require("tags")
 tags.setup_tags()
 
 local themeName = "test_1"
 beautiful.init(gears.filesystem.get_configuration_dir() .. "themes/" .. themeName .. "/theme.lua")
-
-naughty.notify({ title = "Awesome", text = "Loaded rc.lua", timeout = 5 })
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -66,8 +60,6 @@ end
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
---beautiful.init(gears.filesystem.get_themes_dir() .. "default/theme.lua")
-
 -- This is used later as the default terminal and editor to run.
 terminal = "alacritty"
 editor = os.getenv("EDITOR") or "nvim"
@@ -201,6 +193,34 @@ local function runPythonExecCommand()
 	awful.spawn.with_shell("python3 ~/scripts/exec_command.py")
 end
 
+menubar.cache_entries = false
+
+local my_items = {
+	{ name = "Firefox", cmdline = "firefox", icon_path = "/usr/share/icons/hicolor/48x48/apps/firefox.png" },
+	{
+		name = "Terminal",
+		cmdline = "alacritty",
+		icon_path = "/usr/share/icons/hicolor/48x48/apps/utilities-terminal.png",
+	},
+	{ name = "Editor", cmdline = "code", icon_path = "/usr/share/icons/hicolor/48x48/apps/code.png" },
+	{ name = "Shutdown", cmdline = "poweroff", icon_path = "/usr/share/icons/hicolor/48x48/apps/system-shutdown.png" },
+}
+
+-- Patch menubar internals to use your custom list
+local function show_custom_menubar()
+	menubar.gen.all_menu_items = {}
+
+	for _, item in ipairs(my_items) do
+		table.insert(menubar.gen.all_menu_items, {
+			name = item.name,
+			cmdline = item.cmdline,
+			icon_path = item.icon_path,
+		})
+	end
+
+	menubar.show()
+end
+
 -- {{{ Key bindings
 globalkeys = gears.table.join(
 	awful.key({ modkey }, "s", hotkeys_popup.show_help, { description = "show help", group = "awesome" }),
@@ -218,6 +238,8 @@ globalkeys = gears.table.join(
 		{ modkey, "Shift" },
 		"e",
 		runPythonExecCommand,
+		--show_custom_menubar,
+		--my_own_menu:show(),
 		{ description = "run python script to execute command", group = "pythom Scripts" }
 	),
 
@@ -572,3 +594,4 @@ end)
 -- }}}
 --
 require("topBar")
+naughty.notify({ title = "Awesome", text = "Loaded rc.lua", timeout = 5 })

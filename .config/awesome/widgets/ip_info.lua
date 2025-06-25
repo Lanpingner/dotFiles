@@ -42,6 +42,38 @@ local function get_ssid(interface)
 	return ssid
 end
 
+local function get_signal_strength(interface)
+	local cmd = "iw dev " .. interface .. " link"
+	local handle = io.popen(cmd)
+	local signal
+	if handle then
+		for line in handle:lines() do
+			signal = line:match("signal: (%-?%d+) dBm")
+			if signal then
+				break
+			end
+		end
+		handle:close()
+	end
+	return signal
+end
+
+local function get_link_speed(interface)
+	local cmd = "ethtool " .. interface
+	local handle = io.popen(cmd)
+	local speed
+	if handle then
+		for line in handle:lines() do
+			speed = line:match("Speed: (%d+Mb/s)")
+			if speed then
+				break
+			end
+		end
+		handle:close()
+	end
+	return speed
+end
+
 local function color_text(text, color)
 	return '<span color="' .. color .. '">' .. text .. "</span>"
 end
@@ -53,7 +85,17 @@ local function format_interfaces(interfaces, default_iface)
 		local color = iface.interface == default_iface and "green" or "white"
 		local ssid = (iface.interface == default_iface and iface.interface ~= nil) and get_ssid(iface.interface) or nil
 		local ssid_text = ssid and " (" .. ssid .. ")" or ""
-		formatted = formatted .. prefix .. color_text(iface.interface .. ": " .. iface.ip .. ssid_text, color) .. "\n"
+		local signal = (iface.interface == default_iface) and get_signal_strength(iface.interface) or nil
+		local speed = (iface.interface == default_iface) and get_link_speed(iface.interface) or nil
+		local extra = ""
+		if ssid then
+			extra = " (" .. ssid .. (signal and ", " .. signal .. " dBm" or "") .. ")"
+		elseif speed then
+			extra = " (" .. speed .. ")"
+		end
+
+		formatted = formatted .. prefix .. color_text(iface.interface .. ": " .. iface.ip .. extra, color) .. "\n"
+		--formatted = formatted .. prefix .. color_text(iface.interface .. ": " .. iface.ip .. ssid_text, color) .. "\n"
 	end
 	return formatted
 end

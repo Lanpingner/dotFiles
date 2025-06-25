@@ -6,7 +6,8 @@ export TERM="xterm-256color"
 export _JAVA_AWT_WM_NONREPARENTING=1
 export MANPAGER="nvim -c 'set ft=man' -"
 export PYTHONPATH="/srv/Projects/LeviathanPyhtonLogger"
+export PYENV_ROOT="$HOME/.pyenv"
 export CHROME_EXECUTABLE=/opt/google/chrome/chrome
 export ANDROID_HOME=$HOME/android-sdk
-export PATH="$HOME/.pub-cache/bin:/home/romeo/Flutter/bin:$PATH:$ANDROID_HOME/platform-tools"
-export JAVA_HOME=/usr/lib/jvm/java-17-openjdk
+export PATH="$PYENV_ROOT/bin:$HOME/.pub-cache/bin:/home/romeo/Flutter/bin:$PATH:$ANDROID_HOME/platform-tools"
+export JAVA_HOME=/usr/lib/jvm/java-17-openjdk 

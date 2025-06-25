@@ -9,6 +9,7 @@ alias doomupgrade="~/.emacs.d/bin/doom upgrade"
 alias doompurge="~/.emacs.d/bin/doom purge"
 alias firefox="firefox-developer-edition"
 # Help commands
+alias nmap="sudo nmap"
 alias resnet="sudo systemctl restart NetworkManager"
 
 # Changing "ls" to "exa"
