@@ -141,7 +141,7 @@ function network_widget:update()
 			end
 		end
 		local label_iface = default_iface ~= "" and default_iface or "?"
-		self.widget:set_markup(": " .. color_text(label_iface .. " (" .. default_ip .. ")", "green"))
+		self.widget:set_markup(": " .. color_text(label_iface .. " (" .. default_ip .. ")", "white"))
 		self.tooltip:set_markup(formatted)
 	end
 end

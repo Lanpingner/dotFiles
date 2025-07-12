@@ -27,7 +27,9 @@ local function get_bluetooth_devices()
 end
 
 local function get_battery_percentage(mac)
-	local cmd = "upower -i /org/bluez/hci0/dev_" .. mac:gsub(":", "_") .. " | grep percentage | awk '{print $2}'"
+	local cmd = "upower -i /org/freedesktop/UPower/devices/headset_dev_"
+		.. mac:gsub(":", "_")
+		.. " | grep percentage | awk '{print $2}'"
 	local handle = io.popen(cmd)
 	local battery = handle:read("*l")
 	handle:close()
